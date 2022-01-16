@@ -90,7 +90,7 @@
     "prettify": "prettier --write",
     "extract-messages": "i18next-scanner --config=internals/extractMessages/i18next-scanner.config.js",
     "prepare": "husky install",
-    "build-server": "tsc ./server/index.ts --outDir dist/ --esModuleInterop true",
+    "build-server": "tsc ./server/index.ts --skipLibCheck true --outDir dist/ --esModuleInterop true",
     "heroku-postbuild": "react-scripts build && yarn build-server"
   },
   "browserslist": {

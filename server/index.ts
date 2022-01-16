@@ -35,10 +35,11 @@ apiRouter.post(
   '/parse/csv',
   uploadConfiguration.single('file'),
   async (req, res) => {
+    // @ts-ignore
     if (!req.file) {
       return res.status(400).send(errorResponse('No Files uploaded'));
     }
-
+    // @ts-ignore
     const pdfBuffer = await organizeCSV(req.file.path)
 
     return res.status(200).send(pdfBuffer);
