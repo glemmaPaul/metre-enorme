@@ -45,7 +45,6 @@
     "multer": "1.4.4",
     "mustache": "4.2.0",
     "node-plop": "0.26.2",
-    "phantomjs": "2.1.7",
     "plop": "2.7.4",
     "prettier": "2.3.2",
     "puppeteer": "13.0.1",
