@@ -23,3 +23,5 @@ template
 .eslintcache
 
 dist/
+
+.tmp/*
