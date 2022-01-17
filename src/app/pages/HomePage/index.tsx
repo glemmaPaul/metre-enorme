@@ -6,15 +6,15 @@ import Content from 'app/components/Content';
 import CSVForm from 'app/components/CSVForm';
 import PDFDownload from 'app/components/PDFDownload';
 
-const baseURL = 'http://localhost:4000/';
+const baseURL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:4000/';
 
 export function HomePage() {
   const [csvData, setCSVData] = useState(null);
-  const [isDownLoading, setIsDownloading] = useState(false)
-  const [isUploading, setIsUploading] = useState(false)
+  const [isDownLoading, setIsDownloading] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
 
   async function parseCSVInput(inputData) {
-    setIsUploading(true)
+    setIsUploading(true);
     const formData = new FormData();
     console.log(inputData);
     formData.append('color', inputData.color);
@@ -25,19 +25,23 @@ export function HomePage() {
       },
     });
 
-    setIsUploading(false)
+    setIsUploading(false);
 
     setCSVData(response.data);
   }
 
   async function downloadPDF({ color, year }) {
-    setIsDownloading(true)
-    const response = await axios.post(`${baseURL}api/generate/pdf`, {
-      ...(csvData || {}),
-      year,
-      color,
-    }, { responseType: 'blob' });
-    setIsDownloading(false)
+    setIsDownloading(true);
+    const response = await axios.post(
+      `${baseURL}api/generate/pdf`,
+      {
+        ...(csvData || {}),
+        year,
+        color,
+      },
+      { responseType: 'blob' },
+    );
+    setIsDownloading(false);
 
     const url = window.URL.createObjectURL(new Blob([response.data]));
     const link = document.createElement('a');
@@ -48,7 +52,7 @@ export function HomePage() {
   }
 
   function resetFields() {
-    setCSVData(null)
+    setCSVData(null);
   }
 
   return (
@@ -58,8 +62,16 @@ export function HomePage() {
         <meta name="description" content="A Boilerplate application homepage" />
       </Helmet>
       <Content>
-        {!csvData && <CSVForm onDownload={parseCSVInput} />}
-        {csvData && <PDFDownload onDownload={downloadPDF} onReset={resetFields} isDownloading={isDownLoading} />}
+        {!csvData && (
+          <CSVForm onDownload={parseCSVInput} isUploading={isUploading} />
+        )}
+        {csvData && (
+          <PDFDownload
+            onDownload={downloadPDF}
+            onReset={resetFields}
+            isDownloading={isDownLoading}
+          />
+        )}
       </Content>
     </>
   );
