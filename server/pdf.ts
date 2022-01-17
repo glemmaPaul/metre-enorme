@@ -14,17 +14,16 @@ export function generateHTML(pdfData: PDFInputData): string {
 
   const viewOptions = {
     ...pdfData,
-    students: pdfData.students.map((student) => {
+    students: pdfData.students.map(student => {
       return {
         ...student,
         category: pdfData.category,
         reportDate: '2021',
         year: pdfData.year,
-      }
+      };
     }),
     color: pdfData.color,
-   
-  }
+  };
 
   return mustache.render(achievementsHTML, viewOptions);
 }
@@ -41,11 +40,13 @@ export default async function generatePDF(
 ): Promise<Buffer> {
   const html = generateHTML(input);
 
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch({
+    args: ['--no-sandbox', '--disable-setuid-sandbox'],
+  });
   const page = await browser.newPage();
   await page.setContent(html, {
-    waitUntil: 'networkidle2'
-  })
+    waitUntil: 'networkidle2',
+  });
 
   const pdf = await page.pdf({ format: 'a4', printBackground: true });
 
