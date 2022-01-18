@@ -88,7 +88,6 @@
     "generate": "cross-env TS_NODE_PROJECT='./internals/ts-node.tsconfig.json' plop --plopfile internals/generators/plopfile.ts",
     "prettify": "prettier --write",
     "extract-messages": "i18next-scanner --config=internals/extractMessages/i18next-scanner.config.js",
-    "prepare": "husky install",
     "build-server": "tsc ./server/index.ts --skipLibCheck true --esModuleInterop true",
     "install-server": "cd server/ yarn install",
     "clean-heroku-slug": "rm -rf ./node_modules",
