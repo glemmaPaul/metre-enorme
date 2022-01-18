@@ -49,7 +49,7 @@ function organizeRecords(
       return {
         student,
         competencies: studentCompetencies.map(item => ({
-          imagePath: config.serverURL + path.join('/images/competency', item[1]),
+          imagePath: config.pdfImageURL + path.join('/images/competency', item[1]),
           title: item[0],
           date: item[index + studentColumnOffset],
         })),

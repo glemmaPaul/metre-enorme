@@ -1,9 +1,11 @@
 interface Config {
-  serverURL: string;
+  pdfImageURL: string;
 }
 
+const port = process.env.PORT || 4000;
+
 const config: Config = {
-  serverURL: 'http://localhost:4000',
+  pdfImageURL: `http://localhost:${port}`,
 };
 
 export default config;
