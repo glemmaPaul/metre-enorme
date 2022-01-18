@@ -34,7 +34,6 @@
     "express": "4.17.2",
     "fontfaceobserver": "2.1.0",
     "html-pdf": "3.0.1",
-    "husky": "7.0.0",
     "i18next": "20.3.2",
     "i18next-browser-languagedetector": "6.1.2",
     "i18next-scanner": "3.0.0",
@@ -93,7 +92,7 @@
     "build-server": "tsc ./server/index.ts --skipLibCheck true --esModuleInterop true",
     "install-server": "cd server/ yarn install",
     "clean-heroku-slug": "rm -rf ./node_modules",
-    "heroku-postbuild": "yarn build && yarn clean-heroku-slug && yarn install-server && yarn build-server"
+    "heroku-postbuild": "yarn build && yarn install-server && yarn build-server && yarn clean-heroku-slug"
   },
   "browserslist": {
     "production": [
