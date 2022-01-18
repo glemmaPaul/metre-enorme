@@ -11,6 +11,7 @@ const app = express();
 const apiRouter = express.Router();
 const imageRouter = express.Router();
 const competenciesPath = path.join(__dirname, '../', 'public/competencies/images')
+const port = process.env.PORT || 4000
 
 // parse application/json
 app.use(bodyParser.json())
@@ -60,4 +61,6 @@ app.use('/images', imageRouter);
 // Serve them build
 app.use(express.static('build'));
 
-app.listen(process.env.PORT || 4000);
+app.listen(port, function() {
+  console.log(`App listening at Port ${port}`)
+});
