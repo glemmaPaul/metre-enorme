@@ -24,7 +24,7 @@ export function App() {
   const { i18n } = useTranslation();
   return (
     <BrowserRouter>
-      <Layout className="layout">
+      <Layout className="layout" style={{height:"100vh"}}>
         <Header>
           <div className="logo" />
           <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['home']}>
@@ -35,7 +35,7 @@ export function App() {
           <Route exact path="/" component={HomePage} />
           <Route component={NotFoundPage} />
         </Switch>
-        <Footer style={{ textAlign: 'center' }}>Mètre énorme</Footer>
+        <Footer style={{ textAlign: 'center' }}>Kanjer</Footer>
       </Layout>
       <Helmet
         titleTemplate="%s - React Boilerplate"

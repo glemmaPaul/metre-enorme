@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Helmet } from 'react-helmet-async';
-import fs from 'fs';
+import { message } from 'antd'
 import Content from 'app/components/Content';
 import CSVForm from 'app/components/CSVForm';
 import PDFDownload from 'app/components/PDFDownload';
@@ -18,23 +18,31 @@ export function HomePage() {
     const formData = new FormData();
 
     formData.append('file', inputData.file);
-    const response = await axios.post(`${baseURL}api/parse/csv/`, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
+    const response = await axios
+      .post(`${baseURL}api/parse/csv/`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+      .catch(error => {
+        return error.response;
+      });
 
     setIsUploading(false);
 
-    setCSVData(response.data);
+    if (response.data.type === 'error') {
+      message.error(response.data.message)
+    } else {
+      setCSVData(response.data);
+    }
   }
 
   async function downloadPDF({ color, year, report_dates }) {
     setIsDownloading(true);
 
     // we expect momentjs dates
-    const start_date = report_dates[0].startOf('month')
-    const end_date = report_dates[1].endOf('month')
+    const start_date = report_dates[0].startOf('month');
+    const end_date = report_dates[1].endOf('month');
     const response = await axios.post(
       `${baseURL}api/generate/pdf`,
       {
@@ -72,6 +80,7 @@ export function HomePage() {
         )}
         {csvData && (
           <PDFDownload
+            csvData={csvData}
             onDownload={downloadPDF}
             onReset={resetFields}
             isDownloading={isDownLoading}

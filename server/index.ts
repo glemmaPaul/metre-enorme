@@ -3,6 +3,7 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import path from 'path';
 import fs from 'fs';
+import { formatErrorResponse } from './utils'
 import uploadConfiguration from './upload';
 import { organizeCSV } from './csv';
 import generatePDF from './pdf';
@@ -42,9 +43,12 @@ apiRouter.post(
     }
 
     // @ts-ignore
-    const pdfBuffer = await organizeCSV(req.file.path)
-
-    return res.status(200).send(pdfBuffer);
+    try {
+      const pdfBuffer = await organizeCSV(req.file.path)
+      return res.status(200).send(pdfBuffer);
+    } catch (e) {
+      return res.status(400).send(formatErrorResponse(e))
+    }
   },
 );
 

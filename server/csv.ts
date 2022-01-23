@@ -26,8 +26,7 @@ export async function loadCSV(path): Promise<[any]> {
 }
 
 function organizeRecords(
-  records: [any],
-  options: CSVParseOptions,
+  records: [any]
 ): CSVOutputData {
   const studentColumnOffset = 2;
   const headers = records[0];
@@ -62,11 +61,15 @@ function organizeRecords(
 }
 
 export async function organizeCSV(
-  filePath: string,
-  options: CSVParseOptions,
+  filePath: string
 ): Promise<CSVOutputData> {
   const records = await loadCSV(filePath);
 
-  const pdfData = organizeRecords(records, options);
+  const pdfData = organizeRecords(records);
+
+  if (pdfData.students.length <= 0) {
+    throw new Error('No students found in CSV');
+  }
+
   return pdfData;
 }
