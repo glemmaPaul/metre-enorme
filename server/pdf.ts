@@ -71,6 +71,8 @@ export default async function generatePDF(
     waitUntil: 'networkidle2',
   });
 
+  await page.evaluateHandle('document.fonts.ready');
+
   const pdf = await page.pdf({ format: 'a4', printBackground: true });
 
   await browser.close();
