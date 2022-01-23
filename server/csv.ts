@@ -4,13 +4,11 @@ import { parse } from 'csv-parse';
 import debugFactory from 'debug';
 import { generateHTML } from './pdf';
 import puppeteer from 'puppeteer';
-import config from './config'
+import config from './config';
 
-import { CSVOutputData, PDFInputData } from './types';
+import { CSVOutputData, CSVParseOptions } from './types';
 
 const debug = debugFactory('enorme:csv');
-
-const dateFormat = 'MM/YYYY';
 
 export async function loadCSV(path): Promise<[any]> {
   const input = fs.readFileSync(path).toString('utf8');
@@ -27,11 +25,9 @@ export async function loadCSV(path): Promise<[any]> {
   });
 }
 
-
 function organizeRecords(
   records: [any],
-  startDate = null,
-  endDate = null,
+  options: CSVParseOptions,
 ): CSVOutputData {
   const studentColumnOffset = 2;
   const headers = records[0];
@@ -39,55 +35,38 @@ function organizeRecords(
   const students = headers.slice(studentColumnOffset, headers.length);
   const competencies = records.slice(1, records.length);
 
-  return {
-    students: students.map((student, index) => {
-      // Pick images
-      const studentCompetencies = competencies.filter(competency => {
-        return competency[index + studentColumnOffset];
-      });
+  const studentsParsed = students.map((student, index) => {
+    // Pick images
+    const studentCompetencies = competencies.filter(competency => {
+      return competency[index + studentColumnOffset];
+    });
 
-      return {
-        student,
-        competencies: studentCompetencies.map(item => ({
-          imagePath: config.pdfImageURL + path.join('/images/competency', item[1]),
+    return {
+      student,
+      competencies: studentCompetencies.map(item => {
+        return {
+          imagePath:
+            config.pdfImageURL + path.join('/images/competency', item[1]),
           title: item[0],
           date: item[index + studentColumnOffset],
-        })),
-      };
-    }),
+        };
+      }),
+    };
+  })
+
+  return {
+    students: studentsParsed.filter((student) => student.competencies.length > 0),
     category,
     headers,
   };
 }
 
-function HTML2PDF(html: string) {}
-
-export async function organizeCSV(filePath: string): Promise<CSVOutputData> {
+export async function organizeCSV(
+  filePath: string,
+  options: CSVParseOptions,
+): Promise<CSVOutputData> {
   const records = await loadCSV(filePath);
 
-  const pdfData = organizeRecords(records);
+  const pdfData = organizeRecords(records, options);
   return pdfData;
-}
-
-export default async function generatePDF(
-  input: PDFInputData
-): Promise<Buffer> {
-  const html = generateHTML(input);
-  const browser = await puppeteer.launch({ args: ['--no-sandbox', '--disable-setuid-sandbox'] });
-  const page = await browser.newPage();
-  await page.goto('https://google.com', { waitUntil: ['domcontentloaded', 'networkidle0', 'load']})
-  console.log(html);
-  const pdf = await page.pdf({
-    format: 'letter',
-    printBackground: true,
-    margin: {
-      top: '20px',
-      bottom: '20px',
-      right: '20px',
-      left: '20px',
-    },
-  });
-
-  await browser.close();
-  return pdf;
 }

@@ -1,20 +1,22 @@
-import React, {useState} from 'react';
-import { Form, Input, Button, Checkbox } from 'antd';
+import React, { useState } from 'react';
+import { Form, DatePicker, Button, message } from 'antd';
 
-export default function CSVForm({
-  onDownload,
-  isUploading = false
-}) {
-  const [uploadedFile, setUploadedFile] = useState(null)
+const { RangePicker } = DatePicker;
+
+export default function CSVForm({ onDownload, isUploading = false }) {
+  const [uploadedFile, setUploadedFile] = useState(null);
 
   const onFinish = (values: any) => {
     console.log('Success:', values);
-    console.log(uploadedFile)
+    console.log(uploadedFile);
+    if (!uploadedFile) {
+      message.warning("You have to select a csv file")
+    }
     if (uploadedFile && onDownload) {
       onDownload({
         ...values,
-        file: uploadedFile
-      })
+        file: uploadedFile,
+      });
     }
   };
 
@@ -22,9 +24,9 @@ export default function CSVForm({
     console.log('Failed:', errorInfo);
   };
 
-  const onFileSelected = (e) => {
-    setUploadedFile(e.target.files[0])
-  }
+  const onFileSelected = e => {
+    setUploadedFile(e.target.files[0]);
+  };
 
   return (
     <div>
@@ -38,10 +40,7 @@ export default function CSVForm({
         autoComplete="off"
         target="_blank"
       >
-
-        <Form.Item
-          label="CSV File"
-        >
+        <Form.Item wrapperCol={{ offset: 2, span: 16 }} label="CSV File">
           <input type="file" onChange={onFileSelected} />
         </Form.Item>
 
@@ -53,4 +52,4 @@ export default function CSVForm({
       </Form>
     </div>
   );
-};
+}

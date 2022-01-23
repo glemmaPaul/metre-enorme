@@ -16,8 +16,7 @@ export function HomePage() {
   async function parseCSVInput(inputData) {
     setIsUploading(true);
     const formData = new FormData();
-    console.log(inputData);
-    formData.append('color', inputData.color);
+
     formData.append('file', inputData.file);
     const response = await axios.post(`${baseURL}api/parse/csv/`, formData, {
       headers: {
@@ -30,14 +29,20 @@ export function HomePage() {
     setCSVData(response.data);
   }
 
-  async function downloadPDF({ color, year }) {
+  async function downloadPDF({ color, year, report_dates }) {
     setIsDownloading(true);
+
+    // we expect momentjs dates
+    const start_date = report_dates[0].startOf('month')
+    const end_date = report_dates[1].endOf('month')
     const response = await axios.post(
       `${baseURL}api/generate/pdf`,
       {
         ...(csvData || {}),
         year,
         color,
+        start_date,
+        end_date,
       },
       { responseType: 'blob' },
     );
@@ -58,8 +63,8 @@ export function HomePage() {
   return (
     <>
       <Helmet>
-        <title>Home Page</title>
-        <meta name="description" content="A Boilerplate application homepage" />
+        <title>Kanjer | PDF Download</title>
+        <meta name="description" content="Upload for PDF download" />
       </Helmet>
       <Content>
         {!csvData && (

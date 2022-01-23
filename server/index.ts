@@ -40,6 +40,7 @@ apiRouter.post(
     if (!req.file) {
       return res.status(400).send(errorResponse('No Files uploaded'));
     }
+
     // @ts-ignore
     const pdfBuffer = await organizeCSV(req.file.path)
 
@@ -49,8 +50,14 @@ apiRouter.post(
 
 
 apiRouter.post('/generate/pdf', async (req, res) => {
-  console.log(req.body)
-  const pdf = await generatePDF(req.body)
+  const startDate = new Date(req.body.start_date)
+  const endDate = new Date(req.body.end_date)
+  
+  const pdf = await generatePDF({
+    ...req.body,
+    startDate,
+    endDate,
+  })
 
   return res.status(200).send(pdf)
 });
