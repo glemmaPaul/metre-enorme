@@ -72,6 +72,13 @@ app.use('/images', imageRouter);
 // Serve them build
 app.use(express.static('build'));
 
+// SHow better error
+app.use((err, req, res, next) => {
+  res.status(500)
+  res.setHeader('Content-Type', 'application/json');
+  res.send(JSON.stringify(formatErrorResponse(err)))
+})
+
 app.listen(port, function() {
   console.log(`App listening at Port ${port}`)
 });

@@ -4,24 +4,39 @@
 import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
+import { formatErrorResponse } from './utils';
+
+const possibleFileTypes = [
+  'text/x-comma-separated-values',
+  'text/comma-separated-values',
+  'application/octet-stream',
+  'application/vnd.ms-excel',
+  'application/x-csv',
+  'text/x-csv',
+  'text/csv',
+  'application/csv',
+  'application/excel',
+  'application/vnd.msexcel',
+  'text/plain',
+];
 
 /**
  * Makes sure to pass through only csv files
  */
 const csvFilter = (req, file, cb) => {
-  if (file.mimetype.includes('csv')) {
+  if (possibleFileTypes.some(fileType => file.mimetype.includes(fileType))) {
     cb(null, true);
   } else {
-    cb('Please upload only csv file.', false);
+    cb(new Error('Please upload only csv file.'), false);
   }
 };
 
 var storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const dirPath = path.join(__dirname, '..', '.tmp')
+    const dirPath = path.join(__dirname, '..', '.tmp');
 
     if (!fs.existsSync(dirPath)) {
-      fs.mkdirSync(dirPath)
+      fs.mkdirSync(dirPath);
     }
     cb(null, dirPath);
   },
