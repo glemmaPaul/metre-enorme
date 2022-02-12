@@ -3,7 +3,7 @@ import path from 'path';
 import fs from 'fs';
 import puppeteer from 'puppeteer';
 import { parse as parseDate, format as formatDate } from 'date-fns';
-import { fr } from 'date-fns/locale'
+import { fr } from 'date-fns/locale';
 
 import { PDFInputData } from './types';
 
@@ -17,7 +17,6 @@ export function generateHTML(pdfData: PDFInputData): string {
     .toString();
 
   const reportDate = formatDate(pdfData.endDate, 'MMMM yyyy', { locale: fr });
-  console.log(reportDate)
 
   const filteredStudents = pdfData.students.reduce((aggr, student) => {
     const filteredCompetencies = student.competencies.filter(competency => {
@@ -39,8 +38,12 @@ export function generateHTML(pdfData: PDFInputData): string {
       });
     }
 
-    return aggr
+    return aggr;
   }, []);
+
+  if (filteredStudents.length === 0) {
+    throw new Error('No student competencies found for Reporting Dates');
+  }
 
   const viewOptions = {
     ...pdfData,
