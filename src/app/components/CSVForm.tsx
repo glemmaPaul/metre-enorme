@@ -41,7 +41,7 @@ export default function CSVForm({ onDownload, isUploading = false }) {
         target="_blank"
       >
         <Form.Item wrapperCol={{ offset: 2, span: 16 }} label="CSV File">
-          <input type="file" onChange={onFileSelected} />
+          <input type="file" onChange={onFileSelected} accept=".csv,.txt" />
         </Form.Item>
 
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
