@@ -15,7 +15,7 @@ const competenciesPath = path.join(__dirname, '../', 'public/competencies/images
 const port = process.env.PORT || 4000
 
 // parse application/json
-app.use(bodyParser.json())
+app.use(bodyParser.json({ limit: '1mb' }))
 app.use(cors());
 
 
