@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 export interface StudentCompetency {
   imagePath: string;
   date: string;

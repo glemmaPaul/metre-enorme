@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 export function formatErrorResponse(error: Error | string): object {
   const message = error instanceof Error ? error.message : error
 

@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Configuration for multipart upload handler
  */

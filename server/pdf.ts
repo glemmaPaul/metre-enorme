@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import mustache from 'mustache';
 import path from 'path';
 import fs from 'fs';

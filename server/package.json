@@ -3,42 +3,43 @@
     "version": "0.1.0",
     "private": true,
     "dependencies": {
-      "@types/express": "4.17.13",
-      "@types/rimraf": "3.0.0",
-      "@types/shelljs": "0.8.8",
-      "body-parser": "1.19.1",
-      "chalk": "4.1.1",
-      "cors": "2.8.5",
-      "cross-env": "7.0.3",
-      "csv-parse": "5.0.3",
-      "debug": "4.3.3",
-      "express": "4.17.2",
-      "inquirer": "7.3.3",
-      "inquirer-directory": "2.2.0",
-      "multer": "1.4.4",
-      "mustache": "4.2.0",
-      "node-plop": "0.26.2",
-      "plop": "2.7.4",
-      "rimraf": "3.0.2",
-      "shelljs": "0.8.4",
-      "ts-node": "10.0.0",
-      "typescript": "4.2.2"
+        "body-parser": "1.19.1",
+        "chalk": "4.1.1",
+        "cors": "2.8.5",
+        "cross-env": "7.0.3",
+        "csv-parse": "5.0.3",
+        "date-fns": "4.1.0",
+        "debug": "4.3.3",
+        "express": "4.17.2",
+        "inquirer": "7.3.3",
+        "inquirer-directory": "2.2.0",
+        "multer": "1.4.4",
+        "mustache": "4.2.0",
+        "node-plop": "0.26.2",
+        "plop": "2.7.4",
+        "puppeteer": "23.10.1",
+        "shelljs": "0.8.4",
+        "typescript": "4.2.2"
     },
     "scripts": {
-      "start:server": "PORT=4000 NODE_ENV=development DEBUG=enorme* nodemon ./server/index.ts -e js,graphql,ts --exec babel-node src/index.ts --extensions \".ts,.html,.css\" --watch",
-      "prod:server": "node dist/index.js",
-      "build": "tsc ./index.ts --esModuleInterop true --outDir dist",
-      "install-server": "cd server/ yarn install",
-      "clean-heroku-slug": "rm -rf ./node_modules",
-      "heroku-postbuild": "yarn build && yarn install-server && yarn build-server && yarn clean-heroku-slug"
+        "start:server": "PORT=4000 NODE_ENV=development DEBUG=enorme* nodemon ./server/index.ts -e js,graphql,ts --exec babel-node src/index.ts --extensions \".ts,.html,.css\" --watch",
+        "prod:server": "node dist/index.js",
+        "build": "tsc ./index.ts --esModuleInterop true --outDir dist",
+        "install-server": "cd server/ yarn install",
+        "clean-heroku-slug": "rm -rf ./node_modules",
+        "heroku-postbuild": "yarn build && yarn install-server && yarn build-server && yarn clean-heroku-slug"
     },
     "engines": {
-      "yarn": ">=1.22.10",
-      "node": ">=14.0.0"
+        "yarn": ">=1.22.10",
+        "node": ">=14.0.0"
     },
     "devDependencies": {
-      "@babel/core": "7.16.5",
-      "@babel/node": "7.16.5",
-      "nodemon": "2.0.15"
+        "@babel/core": "7.16.5",
+        "@babel/node": "7.16.5",
+        "@types/express": "4.17.13",
+        "@types/node": "^22.10.1",
+        "@types/shelljs": "0.8.8",
+        "nodemon": "2.0.15",
+        "ts-node": "^10.9.2"
     }
-  }
+}
