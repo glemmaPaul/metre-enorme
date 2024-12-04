@@ -27,7 +27,7 @@
     "scripts": {
       "start:server": "PORT=4000 NODE_ENV=development DEBUG=enorme* nodemon ./server/index.ts -e js,graphql,ts --exec babel-node src/index.ts --extensions \".ts,.html,.css\" --watch",
       "prod:server": "node dist/index.js",
-      "build-server": "tsc ./server/index.ts --skipLibCheck true --esModuleInterop true",
+      "build": "tsc ./index.ts --esModuleInterop true --outDir dist",
       "install-server": "cd server/ yarn install",
       "clean-heroku-slug": "rm -rf ./node_modules",
       "heroku-postbuild": "yarn build && yarn install-server && yarn build-server && yarn clean-heroku-slug"
