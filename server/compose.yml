@@ -9,7 +9,7 @@ services:
       - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
       - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
-      - "--certificatesresolvers.myresolver.acme.email=your-email@example.com"
+      - "--certificatesresolvers.myresolver.acme.email=paul@cybertowel.com"
       - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
     ports:
       - "80:80"
@@ -20,6 +20,10 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
+      - "traefik.http.routers.traefik.rule=Host(`traefik.kanjer.backend.engineering`)"
+      - "traefik.http.routers.traefik.service=api@internal"
+      - "traefik.http.routers.traefik.entrypoints=websecure"
+      - "traefik.http.routers.traefik.tls.certresolver=myresolver"
 
   web-server:
     build:
@@ -32,8 +36,9 @@ services:
       - "traefik.http.routers.webserver.rule=Host(`kanjer.backend.engineering`)"
       - "traefik.http.routers.webserver.entrypoints=websecure"
       - "traefik.http.routers.webserver.tls.certresolver=myresolver"
-      - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https" # Redirect middleware
-      - "traefik.http.routers.webserver.middlewares=redirect-to-https" # Attach middleware to the router
+      - "traefik.http.services.webserver.loadbalancer.server.port=4000"
+      - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"  # Redirect middleware
+      - "traefik.http.routers.webserver.middlewares=redirect-to-https"            # Attach middleware to router
     volumes:
       - .:/app
     working_dir: /app
