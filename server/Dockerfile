@@ -13,7 +13,7 @@ RUN yarn install
 COPY . .
 
 # Build the server, I am a lazy boy and tsc sucks balls
-RUN yarn build
+RUN yarn build &> /dev/null
 
 # Expose the port
 EXPOSE 4000
