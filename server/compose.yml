@@ -19,7 +19,9 @@ services:
       - "./letsencrypt:/letsencrypt"  # Volume for SSL certificates
     labels:
       - "traefik.enable=true"
+      # Define the redirect middleware globally (optional)
       - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
+      # Traefik dashboard router
       - "traefik.http.routers.traefik.rule=Host(`traefik.kanjer.backend.engineering`)"
       - "traefik.http.routers.traefik.service=api@internal"
       - "traefik.http.routers.traefik.entrypoints=websecure"
@@ -33,12 +35,17 @@ services:
       NODE_ENV: production
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.webserver.rule=Host(`kanjer.backend.engineering`)"
-      - "traefik.http.routers.webserver.entrypoints=websecure"
-      - "traefik.http.routers.webserver.tls.certresolver=myresolver"
+      # HTTPS router
+      - "traefik.http.routers.webserver-secure.rule=Host(`kanjer.backend.engineering`)"
+      - "traefik.http.routers.webserver-secure.entrypoints=websecure"
+      - "traefik.http.routers.webserver-secure.tls.certresolver=myresolver"
       - "traefik.http.services.webserver.loadbalancer.server.port=4000"
-      - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"  # Redirect middleware
-      - "traefik.http.routers.webserver.middlewares=redirect-to-https"            # Attach middleware to router
+      # HTTP router with redirect middleware
+      - "traefik.http.routers.webserver-insecure.rule=Host(`kanjer.backend.engineering`)"
+      - "traefik.http.routers.webserver-insecure.entrypoints=web"
+      - "traefik.http.routers.webserver-insecure.middlewares=redirect-to-https"
+      # Define the redirect middleware within this service (ensures accessibility)
+      - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
     volumes:
       - .:/app
     working_dir: /app
