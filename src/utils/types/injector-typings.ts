@@ -1,6 +1,5 @@
 import { RootState } from 'types';
 import { Saga } from 'redux-saga';
-import { SagaInjectionModes } from 'redux-injectors';
 import { Reducer, AnyAction } from '@reduxjs/toolkit';
 
 type RequiredRootState = Required<RootState>;
@@ -18,5 +17,4 @@ export interface InjectReducerParams<Key extends RootStateKeyType> {
 export interface InjectSagaParams {
   key: RootStateKeyType | string;
   saga: Saga;
-  mode?: SagaInjectionModes;
 }
