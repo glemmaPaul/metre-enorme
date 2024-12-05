@@ -13,7 +13,7 @@ import generatePDF from './pdf';
 const app = express();
 const apiRouter = express.Router();
 const imageRouter = express.Router();
-const competenciesPath = path.join(__dirname, '../', 'public/competencies/images')
+const competenciesPath = path.join(__dirname, '/competencies/images')
 const port = process.env.PORT || 4000
 
 // parse application/json
