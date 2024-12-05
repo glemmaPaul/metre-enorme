@@ -16,6 +16,8 @@ const imageRouter = express.Router();
 const competenciesPath = path.join(__dirname, '/competencies/images')
 const port = process.env.PORT || 4000
 
+console.log('Competencies Path', competenciesPath)
+
 // parse application/json
 app.use(bodyParser.json({ limit: '1mb' }))
 app.use(cors());
@@ -58,12 +60,15 @@ apiRouter.post(
 apiRouter.post('/generate/pdf', async (req, res) => {
   const startDate = new Date(req.body.start_date)
   const endDate = new Date(req.body.end_date)
-  
-  const pdf = await generatePDF({
-    ...req.body,
-    startDate,
-    endDate,
-  })
+  try {
+    const pdf = await generatePDF({
+      ...req.body,
+      startDate,
+      endDate,
+    })
+  } catch (e) {
+    return res.status(400).send(formatErrorResponse(e))
+  }
 
   return res.status(200).send(pdf)
 });

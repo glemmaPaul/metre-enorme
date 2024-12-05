@@ -23,7 +23,7 @@
         "typescript": "4.2.2"
     },
     "scripts": {
-        "start:server": "PORT=4000 NODE_ENV=development DEBUG=enorme* nodemon ./server/index.ts -e js,graphql,ts --exec babel-node src/index.ts --extensions \".ts,.html,.css\" --watch",
+        "start:server": "PORT=4000 NODE_ENV=development DEBUG=enorme* nodemon ./index.ts -e js,graphql,ts --exec babel-node index.ts --extensions \".ts,.html,.css\" --watch",
         "prod:server": "node dist/index.js",
         "build": "tsc -p tsconfig.json --esModuleInterop true --outDir dist",
         "build-silent": "tsc-silent -p tsconfig.json --suppress @",
