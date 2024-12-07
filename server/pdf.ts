@@ -9,7 +9,9 @@ import { fr } from 'date-fns/locale';
 
 import { PDFInputData } from './types';
 
-const htmlFolder = path.join(__dirname, '../html');
+const rootDir = process.env.ROOT_DIR || __dirname;
+
+const htmlFolder = path.join(rootDir, 'html');
 
 const dateFormat = 'MM/yyyy';
 
@@ -63,11 +65,11 @@ var options = {
   header: { height: '50px' },
 };
 
+
 export default async function generatePDF(
   input: PDFInputData,
 ): Promise<Buffer> {
-  const html = generateHTML(input);
-
+  
   const browser = await puppeteer.launch({
     args: ['--no-sandbox', '--disable-setuid-sandbox'],
   });
