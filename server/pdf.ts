@@ -69,7 +69,7 @@ var options = {
 export default async function generatePDF(
   input: PDFInputData,
 ): Promise<Buffer> {
-  const html = "<html><body>This is a test</body></html>";
+  const html = generateHTML(input);
   
   const browser = await puppeteer.launch({
     args: ['--no-sandbox', '--disable-setuid-sandbox'],
@@ -84,6 +84,9 @@ export default async function generatePDF(
   const pdf = await page.pdf({ format: 'a4', printBackground: true });
 
   await browser.close();
+
+  // Save for debug
+  fs.writeFileSync('test.pdf', pdf);
 
   return pdf;
 }

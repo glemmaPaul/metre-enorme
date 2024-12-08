@@ -13,7 +13,10 @@ import generatePDF from './pdf';
 const app = express();
 const apiRouter = express.Router();
 const imageRouter = express.Router();
-const competenciesPath = path.join(__dirname, '/competencies/images')
+
+const rootDir = process.env.ROOT_DIR || __dirname;
+
+const competenciesPath = path.join(rootDir, '/competencies/images')
 const port = process.env.PORT || 4000
 
 console.log('Competencies Path', competenciesPath)
@@ -67,11 +70,14 @@ apiRouter.post('/generate/pdf', async (req, res) => {
       startDate,
       endDate,
     })
+
+    return res.status(200).send(pdf)
+
   } catch (e) {
     return res.status(400).send(formatErrorResponse(e))
   }
 
-  return res.status(200).send(pdf)
+  
 });
 
 app.use('/api', apiRouter);
