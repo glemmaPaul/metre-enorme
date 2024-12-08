@@ -46,8 +46,6 @@ services:
       - "traefik.http.routers.webserver-insecure.middlewares=redirect-to-https"
       # Define the redirect middleware within this service (ensures accessibility)
       - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
-    volumes:
-      - .:/app
     working_dir: /app
     command: ["yarn", "prod:server"]
     restart: unless-stopped
