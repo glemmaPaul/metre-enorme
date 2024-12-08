@@ -69,6 +69,7 @@ var options = {
 export default async function generatePDF(
   input: PDFInputData,
 ): Promise<Buffer> {
+  const html = generateHTML(input);
   
   const browser = await puppeteer.launch({
     args: ['--no-sandbox', '--disable-setuid-sandbox'],
