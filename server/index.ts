@@ -60,8 +60,9 @@ apiRouter.post(
 apiRouter.post('/generate/pdf', async (req, res) => {
   const startDate = new Date(req.body.start_date)
   const endDate = new Date(req.body.end_date)
+  let pdf = null
   try {
-    const pdf = await generatePDF({
+    pdf = await generatePDF({
       ...req.body,
       startDate,
       endDate,

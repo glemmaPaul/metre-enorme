@@ -43,18 +43,27 @@ export function HomePage() {
     // we expect momentjs dates
     const start_date = report_dates[0].startOf('month');
     const end_date = report_dates[1].endOf('month');
-    const response = await axios.post(
-      `${baseURL}api/generate/pdf`,
-      {
-        ...(csvData || {}),
-        year,
-        color,
-        start_date,
-        end_date,
-      },
-      { responseType: 'blob' },
-    );
+    let response: any = null;
+    try {
+      response = await axios.post(
+        `${baseURL}api/generate/pdf`,
+        {
+          ...(csvData || {}),
+          year,
+          color,
+          start_date,
+          end_date,
+        },
+        { responseType: 'blob' },
+      );
+    } catch (error: any) {
+      message.error('Error generating PDF' + error.message);
+    }
     setIsDownloading(false);
+
+    if (!response) {
+      return;
+    }
 
     const url = window.URL.createObjectURL(new Blob([response.data]));
     const link = document.createElement('a');
