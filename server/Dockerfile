@@ -22,4 +22,4 @@ EXPOSE 4000
 ENV ROOT_DIR /app
 
 # Set default command
-CMD ["yarn", "prod:server"]
+CMD ["node", "dist/index.js"]
