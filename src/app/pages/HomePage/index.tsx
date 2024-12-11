@@ -67,12 +67,22 @@ export function HomePage() {
       return;
     }
 
-    const url = window.URL.createObjectURL(new Blob([response.data]));
+    // Create blob URL safely
+    const blob = new Blob([response.data], { type: 'application/pdf' });
+    const url = window.URL.createObjectURL(blob);
+    
+    // Create download link
     const link = document.createElement('a');
     link.href = url;
-    link.setAttribute('download', 'export-metre-enorme.pdf'); //or any other extension
+    link.download = `export-metre-enorme.pdf`;
+    
+    // Append to body, click, and clean up
     document.body.appendChild(link);
     link.click();
+    
+    // Remove link and revoke blob URL to free memory
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
   }
 
   function resetFields() {
