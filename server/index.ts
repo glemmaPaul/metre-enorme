@@ -71,6 +71,10 @@ apiRouter.post('/generate/pdf', async (req, res) => {
       endDate,
     })
 
+    // Set proper headers for PDF download
+    res.contentType('application/pdf');
+    res.setHeader('Content-Disposition', 'attachment; filename=pdf-genrated.pdf');
+
     return res.status(200).send(pdf)
 
   } catch (e) {
