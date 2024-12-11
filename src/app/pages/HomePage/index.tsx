@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Helmet } from 'react-helmet-async';
 import { message } from 'antd'
@@ -12,6 +12,8 @@ export function HomePage() {
   const [csvData, setCSVData] = useState(null);
   const [isDownLoading, setIsDownloading] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
+
+
 
   async function parseCSVInput(inputData) {
     setIsUploading(true);
@@ -76,6 +78,18 @@ export function HomePage() {
   function resetFields() {
     setCSVData(null);
   }
+
+  useEffect(() => {
+    // Execute lambda public endpoint to start the ec2 instance
+    // https://t56gewwhm5scizjmyaneqpgc3u0gxrrh.lambda-url.eu-west-3.on.aws/
+    message.info('Starting the backend');
+
+    axios.get('https://t56gewwhm5scizjmyaneqpgc3u0gxrrh.lambda-url.eu-west-3.on.aws/').then((response) => {
+      message.success('Backend started');
+    }).catch((error) => {
+      message.error('Error starting the backend');
+    });
+  }, []);
 
   return (
     <>
