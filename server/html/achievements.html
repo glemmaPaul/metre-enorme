@@ -6,7 +6,7 @@
     @font-face { 
       font-family: "LocalPDFFont";
       /* Ugly as hell, but it works */
-      src: src: url('https://www.w3.org/Style/CSS/Test/Fonts/Ahem.ttf') format('truetype');
+      src: src: url({{fontUrl}}) format('truetype');
   }
 
 
@@ -28,7 +28,7 @@
     @media print {
       body {
         background-color: {{ color }};
-        font-family: 'Arial', sans-serif;
+        font-family: "LocalPDFFont" , sans-serif;
       }
       .page {
         margin: 0;

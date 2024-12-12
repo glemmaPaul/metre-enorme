@@ -85,6 +85,10 @@ apiRouter.post('/generate/pdf', async (req, res) => {
   
 });
 
+apiRouter.get('/ping', (req, res) => {
+  return res.status(200).send({ message: 'pong' })
+})
+
 app.use('/api', apiRouter);
 app.use('/images', imageRouter);
 

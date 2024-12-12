@@ -6,6 +6,7 @@ import fs from 'fs';
 import puppeteer from 'puppeteer';
 import { parse as parseDate, format as formatDate } from 'date-fns';
 import { fr } from 'date-fns/locale';
+import config from './config';
 
 import { PDFInputData } from './types';
 
@@ -53,6 +54,7 @@ export function generateHTML(pdfData: PDFInputData): string {
     ...pdfData,
     students: filteredStudents,
     color: pdfData.color,
+    fontUrl: config.pdfImageURL + '/fonts/KGJuneBug.ttf',
   };
 
   return mustache.render(achievementsHTML, viewOptions);
