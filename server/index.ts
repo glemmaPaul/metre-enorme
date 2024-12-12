@@ -17,6 +17,7 @@ const imageRouter = express.Router();
 const rootDir = process.env.ROOT_DIR || __dirname;
 
 const competenciesPath = path.join(rootDir, '/competencies/images')
+const fontsPath = path.join(rootDir, '/fonts')
 const port = process.env.PORT || 4000
 
 console.log('Competencies Path', competenciesPath)
@@ -86,6 +87,8 @@ apiRouter.post('/generate/pdf', async (req, res) => {
 
 app.use('/api', apiRouter);
 app.use('/images', imageRouter);
+
+app.use('/fonts', express.static(fontsPath))
 
 // Serve them build
 app.use(express.static('build'));
