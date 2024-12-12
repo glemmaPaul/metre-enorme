@@ -56,7 +56,7 @@ export function HomePage() {
           start_date,
           end_date,
         },
-        { responseType: 'blob' },
+        { responseType: 'arraybuffer', },
       );
     } catch (error: any) {
       message.error('Error generating PDF' + error.message);
