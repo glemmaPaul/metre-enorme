@@ -71,7 +71,7 @@ apiRouter.post('/generate/pdf', async (req, res) => {
       endDate,
     })
 
-    pdfBuffer = Buffer.from(pdf)
+    const pdfBuffer = Buffer.from(pdf)
 
     // Set proper headers for PDF download
     res.set({ 'Content-Type': 'application/pdf' });
