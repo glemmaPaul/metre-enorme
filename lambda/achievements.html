@@ -1,0 +1,146 @@
+<html>
+<head>
+  <meta charset="utf8">
+  <title>La classe D'Élodie</title>
+  <style>
+    @font-face { 
+      font-family: "LocalPDFFont";
+      /* Ugly as hell, but it works */
+      src: url("https://kanjer-competency-assets.s3.eu-west-3.amazonaws.com/fonts/KGJuneBug.ttf") format('truetype');
+  }
+
+
+    html, body {
+      margin: 0;
+      padding: 0;
+    }
+    
+    
+    
+    
+    .page {
+      position: relative;
+      display: block;
+      page-break-after: auto;
+      overflow: hidden;
+    }
+    
+    @media print {
+      body {
+        background-color: {{ color }};
+        font-family: "Comic Sans MS", sans-serif;
+      }
+      .page {
+        margin: 0;
+        height: 100%;
+        width: 100%;
+      }
+    }
+    
+    .container {
+      position: absolute;
+      background: #FFF;
+      margin: 3% 5% 1% 5%;
+      height: 89%;
+      width: 90%;
+      padding: 2%;
+      box-sizing: border-box;
+    }
+    
+    .achievement {
+      width: 31%;
+      padding: 1%;
+      text-align: center;
+      height: 18%;
+      float: left;
+      background-position: center;
+      border: none;
+    }
+    
+    .achievement img {
+      border: none;
+    }
+    
+    .center {
+      text-align: center;
+    }
+    
+    .logo {
+      position: relative;
+      width: 80%;
+      left: 10%;
+      top: 15%;
+    }
+    
+    .page-header {
+      font-size: 25px;
+      line-height: 22px;
+      height: 35px;
+      padding: 25px 5% 0px 5%;
+      color: #000;
+    }
+    
+    .page-header .title {
+      float: left;
+      width: 75%;
+      text-align: left;
+    }
+
+    .page-header .title .underline {
+      text-decoration: underline;
+    }
+    
+    .page-header .year {
+      float: right;
+      width: 50px;
+      height: 50px;
+      text-align: right;
+      background-image: url("year-circle.png");
+      background-position: center;
+      background-size: 50px 50px;
+      overflow: visible;
+    }
+    
+    .page-footer {
+      text-align: right;
+      padding-right: 20px;
+      color: #000;
+      margin-bottom: 10px;
+      border: 0px;
+      padding-top: 5px;
+      position: absolute;
+      bottom: 0px;
+      margin: 3% 5% 1% 5%;
+      width: 90%;
+    }
+    
+    footer {
+      border: none;
+    }
+    
+  </style>
+</head>
+<body>
+  {{#students}}
+  <div class="page">
+    <div class="page-header" id="pageHeader-{{@index}}">
+        <div class="title"><span class="underline">{{ category }}</span>, {{ reportDate }}</div>
+        <div class="year">{{ year }}</div>
+    </div>
+    <div class="container">
+      {{#competencies}}
+      <div class="achievement">
+        <img src="{{imagePath}}" height="100%"/>
+      </div>
+      {{/competencies}}
+      
+    </div>
+    <div class="page-footer" id="pageFooter-{{@index}}">
+      {{ student }}
+    </div>
+  </div>
+  
+  {{/students}}
+  
+</body>
+</html>

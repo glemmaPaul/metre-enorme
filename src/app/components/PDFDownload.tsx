@@ -71,9 +71,9 @@ export default function PDFDownload({
         autoComplete="off"
         target="_blank"
       >
-        <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+        {/* <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
         A total of <strong>{csvData.students.length} students</strong> found.
-        </Form.Item>
+        </Form.Item> */}
         <Form.Item label="Color" required={true} name="color">
           <AutoComplete options={colorOptions} />
         </Form.Item>

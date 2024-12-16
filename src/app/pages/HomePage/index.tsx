@@ -7,36 +7,36 @@ import CSVForm from 'app/components/CSVForm';
 import PDFDownload from 'app/components/PDFDownload';
 
 const baseURL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:4000/';
+const generatePDFLambda = process.env.REACT_APP_LAMBDA_URL || 'https://mi3xolp4ghx656xcieu24wfde40myzue.lambda-url.eu-west-3.on.aws/';
 
 export function HomePage() {
-  const [csvData, setCSVData] = useState(null);
+  const [csvData, setCSVData] = useState(null) as any;
   const [isDownLoading, setIsDownloading] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
 
 
 
   async function parseCSVInput(inputData) {
-    setIsUploading(true);
-    const formData = new FormData();
+    var reader = new FileReader();
 
-    formData.append('file', inputData.file);
-    const response = await axios
-      .post(`${baseURL}api/parse/csv/`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      })
-      .catch(error => {
-        return error.response;
+    reader.onload = function (evt) {
+      const result = evt.target?.result;
+
+      if (!result) {
+        message.error('Error reading file');
+      }
+
+      // Turn into base64
+      const base64 = btoa(unescape(encodeURIComponent(result as string)));
+
+      setCSVData({
+        csv: base64,
+        fileName: inputData.file.name,
       });
 
-    setIsUploading(false);
-
-    if (response.data.type === 'error') {
-      message.error(response.data.message)
-    } else {
-      setCSVData(response.data);
     }
+
+    reader.readAsText(inputData.file, "UTF-8");
   }
 
   async function downloadPDF({ color, year, report_dates }) {
@@ -45,16 +45,20 @@ export function HomePage() {
     // we expect momentjs dates
     const start_date = report_dates[0].startOf('month');
     const end_date = report_dates[1].endOf('month');
+
+    
+
     let response: any = null;
     try {
-      response = await axios.post(
-        `${baseURL}api/generate/pdf`,
+      // Instead sent to lamba function
+     response = await axios.post(
+        generatePDFLambda,
         {
-          ...(csvData || {}),
-          year,
-          color,
-          start_date,
-          end_date,
+          "csv": csvData.csv,
+          "year": "2021",
+          "start_date": start_date.format('YYYY-MM-DD'),
+          "end_date": end_date.format('YYYY-MM-DD'),
+          "color": color,
         },
         { responseType: 'arraybuffer', },
       );
@@ -67,7 +71,7 @@ export function HomePage() {
       return;
     }
 
-    // Create blob URL safely
+
     const blob = new Blob([response.data], { type: 'application/pdf' });
     const url = window.URL.createObjectURL(blob);
     
