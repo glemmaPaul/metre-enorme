@@ -8,7 +8,6 @@ import { parse as parseDate, format as formatDate } from 'date-fns';
 import { fr } from 'date-fns/locale';
 
 import achievementsHTML from "./achievements.html"
-import kgJuneBug from "./KGJuneBug.ttf"
 
 interface Competency {
   title: string;
@@ -165,7 +164,6 @@ function generateHTML(pdfData: PDFInputData) {
 
   const view = {
     ...pdfData,
-    customFont: Buffer.from(kgJuneBug).toString('base64'),
     students: filteredStudents,
   };
 
