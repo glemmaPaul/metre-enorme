@@ -55,7 +55,7 @@ export function HomePage() {
         generatePDFLambda,
         {
           "csv": csvData.csv,
-          "year": "2021",
+          "year": year,
           "start_date": start_date.format('YYYY-MM-DD'),
           "end_date": end_date.format('YYYY-MM-DD'),
           "color": color,

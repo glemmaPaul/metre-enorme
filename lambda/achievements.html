@@ -25,11 +25,15 @@
       page-break-after: auto;
       overflow: hidden;
     }
+
+    body {
+        font-family: "KGJuneBug", "LocalPDFFont", sans-serif;
+    }
     
     @media print {
       body {
         background-color: {{ color }};
-        font-family: sans-serif;
+        font-family: "KGJuneBug", "LocalPDFFont", sans-serif;
       }
       .page {
         margin: 0;
