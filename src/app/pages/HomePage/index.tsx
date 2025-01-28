@@ -59,11 +59,13 @@ export function HomePage() {
           "start_date": start_date.format('YYYY-MM-DD'),
           "end_date": end_date.format('YYYY-MM-DD'),
           "color": color,
-        },
-        { responseType: 'arraybuffer', },
+        }
       );
     } catch (error: any) {
-      message.error('Error generating PDF' + error.message);
+      // Get the response error
+      const responseData = error.response.data;
+      const errorMessage = responseData.error || "No error message provided";
+      message.error('Error generating PDF: ' + errorMessage);
     }
     setIsDownloading(false);
 
@@ -71,22 +73,27 @@ export function HomePage() {
       return;
     }
 
+    // Response has a url inside a json response
+    const url = response.data.url;
+    window.open(url, '_blank');
 
-    const blob = new Blob([response.data], { type: 'application/pdf' });
-    const url = window.URL.createObjectURL(blob);
+
+
+    // const blob = new Blob([response.data], { type: 'application/pdf' });
+    // const url = window.URL.createObjectURL(blob);
     
-    // Create download link
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `export-metre-enorme.pdf`;
+    // // Create download link
+    // const link = document.createElement('a');
+    // link.href = url;
+    // link.download = `export-metre-enorme.pdf`;
     
-    // Append to body, click, and clean up
-    document.body.appendChild(link);
-    link.click();
+    // // Append to body, click, and clean up
+    // document.body.appendChild(link);
+    // link.click();
     
-    // Remove link and revoke blob URL to free memory
-    document.body.removeChild(link);
-    window.URL.revokeObjectURL(url);
+    // // Remove link and revoke blob URL to free memory
+    // document.body.removeChild(link);
+    // window.URL.revokeObjectURL(url);
   }
 
   function resetFields() {

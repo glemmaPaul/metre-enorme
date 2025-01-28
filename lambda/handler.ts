@@ -1,4 +1,3 @@
-
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 import { parse } from 'csv-parse/sync';
 import Mustache from 'mustache';
@@ -6,6 +5,8 @@ import chromium from '@sparticuz/chromium';
 import puppeteer from 'puppeteer-core';
 import { parse as parseDate, format as formatDate } from 'date-fns';
 import { fr } from 'date-fns/locale';
+import { S3 } from 'aws-sdk';
+import { v4 as uuidv4 } from 'uuid';
 
 import achievementsHTML from "./achievements.html"
 
@@ -48,7 +49,8 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
     //   "start_date": "YYYY-MM-DD",
     //   "end_date": "YYYY-MM-DD",
     //   "year": "2020-2021",
-    //   "color": "#000"
+    //   "color": "#000",
+    //   "preview": boolean
     // }
     const body = JSON.parse(event.body);
     if (!body.csv) {
@@ -88,13 +90,31 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
 
     const pdfBuffer = await generatePDF(html);
 
-    
+    // S3 CODE HERE, UPLOAD TO S3 and return URL
+    const s3 = new S3({
+      region: 'eu-west-3', // or the region of your bucket
+    });
+
+    const key = `generated/${uuidv4()}.pdf`;
+
+    await s3
+      .putObject({
+        Bucket: 'kanjer-generated-pdfs',
+        Key: key,
+        Body: pdfBuffer,
+        ContentType: 'application/pdf',
+      })
+      .promise();
+
+    // Construct a direct URL to the PDF in S3. If your bucket is private,
+    // you'll need to generate a signed URL instead.
+    const s3Url = `https://kanjer-generated-pdfs.s3.eu-west-3.amazonaws.com/${key}`;
+
     return {
       statusCode: 200,
-      headers: { 'Content-Type': 'application/pdf' },
-      body: pdfBuffer.toString('base64'),
-      isBase64Encoded: true,
+      body: JSON.stringify({ url: s3Url }),
     };
+
   } catch (error: any) {
     return {
       statusCode: 500,
@@ -116,7 +136,7 @@ function organizeCSV(records: string[][]): CSVOutputData {
       student,
       competencies: studentCompetencies.map(item => ({
         title: item[0],
-        imagePath: 'https://kanjer-competency-assets.s3.eu-west-3.amazonaws.com/images/' + item[1], // Adjust or host images externally
+        imagePath: 'https://kanjer-competency-assets.s3.eu-west-3.amazonaws.com/images/' + item[1],
         date: item[index + studentColumnOffset],
       })),
     };

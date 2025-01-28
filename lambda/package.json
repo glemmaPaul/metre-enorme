@@ -11,11 +11,15 @@
   "description": "",
   "dependencies": {
     "@sparticuz/chromium": "^131.0.1",
+    "aws-sdk": "^2.1692.0",
     "csv-parse": "^5.6.0",
     "mustache": "^4.2.0",
-    "puppeteer-core": "^23.10.4"
+    "puppeteer-core": "^23.10.4",
+    "uuid": "^11.0.5"
   },
   "devDependencies": {
+    "@types/aws-sdk": "^2.7.4",
+    "@types/uuid": "^10.0.0",
     "esbuild": "^0.24.0"
   }
 }
